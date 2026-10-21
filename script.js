@@ -1,82 +1,45 @@
 
-const expenseForm = document.getElementById("expense-form");
-const expenseList = document.getElementById("expense-list");
-const totalAmount = document.getElementById("total-amount");
-
 const salesForm = document.getElementById("sales-form");
 const salesList = document.getElementById("sales-list");
+
 const totalSalesDisplay = document.getElementById("total-sales");
-const businessBalanceDisplay = document.getElementById("business-balance");
+const totalTransactionsDisplay = document.getElementById("total-transactions");
+const mpesaSalesDisplay = document.getElementById("mpesa-sales");
 
-// Get the original sample expenses from the HTML.
-function getStartingExpenses() {
-    return Array.from(
-        expenseList.querySelectorAll(".expense-item")
-    ).map(function(item) {
-        const heading = item.querySelector("h3, h4");
-        const description = item.querySelector("div p");
-        const amountElement = item.querySelector(".expense-amount");
+const reportDateInput = document.getElementById("report-date");
+const reportSalesDisplay = document.getElementById("report-sales");
+const reportCountDisplay = document.getElementById("report-count");
+const reportMpesaDisplay = document.getElementById("report-mpesa");
+const exportReportButton = document.getElementById("export-report");
 
-        return {
-            category: heading ? heading.textContent.trim() : "Other",
-            name: description ? description.textContent.trim() : "Expense",
-            amount: Number(
-                amountElement
-                    ? amountElement.textContent.replace(/[^0-9.]/g, "")
-                    : 0
-            ),
-            date: ""
-        };
-    }).filter(function(expense) {
-        return Number.isFinite(expense.amount) && expense.amount > 0;
-    });
+function getTodayDate() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+
+    return year + "-" + month + "-" + day;
 }
 
-// Load previously saved expenses safely.
-function loadSavedExpenses() {
-    try {
-        const savedData = JSON.parse(localStorage.getItem("expenses"));
-
-        if (!Array.isArray(savedData)) {
-            return [];
-        }
-
-        return savedData.filter(function(expense) {
-            return (
-                expense &&
-                typeof expense.name === "string" &&
-                Number.isFinite(Number(expense.amount)) &&
-                Number(expense.amount) > 0
-            );
-        }).map(function(expense) {
-            return {
-                name: expense.name,
-                amount: Number(expense.amount),
-                category: expense.category || "Other",
-                date: expense.date || ""
-            };
-        });
-    } catch (error) {
-        console.error("Could not load expenses:", error);
-        return [];
-    }
+function formatMoney(amount) {
+    return "KSh " + amount.toFixed(2);
 }
 
-// Load sales and support older sales without dates or payment methods.
 function loadSavedSales() {
     try {
-        const savedData = JSON.parse(
+        const saved = JSON.parse(
             localStorage.getItem("biztrack-sales")
         );
 
-        if (!Array.isArray(savedData)) {
+        if (!Array.isArray(saved)) {
             return [];
         }
 
-        return savedData.filter(function(sale) {
+        return saved.filter(function(sale) {
             return (
                 sale &&
                 typeof sale.service === "string" &&
+                sale.service.trim() !== "" &&
                 Number.isFinite(Number(sale.amount)) &&
                 Number(sale.amount) > 0
             );
@@ -94,133 +57,35 @@ function loadSavedSales() {
     }
 }
 
-let expenses = loadSavedExpenses();
 let sales = loadSavedSales();
-
-// Restore original sample expenses without duplicating them.
-const startingExpenses = getStartingExpenses();
-
-startingExpenses.forEach(function(sample) {
-    const alreadyExists = expenses.some(function(expense) {
-        return (
-            expense.name === sample.name &&
-            expense.category === sample.category &&
-            expense.amount === sample.amount
-        );
-    });
-
-    if (!alreadyExists) {
-        expenses.unshift(sample);
-    }
-});
-
-function saveExpenses() {
-    localStorage.setItem("expenses", JSON.stringify(expenses));
-}
 
 function saveSales() {
     localStorage.setItem("biztrack-sales", JSON.stringify(sales));
 }
 
-// Return today's date in local YYYY-MM-DD format.
-function getTodayDate() {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, "0");
-    const day = String(today.getDate()).padStart(2, "0");
-
-    return year + "-" + month + "-" + day;
-}
-
-function formatMoney(amount) {
-    return "KSh " + amount.toFixed(2);
-}
-
-// Calculate the expense total from our expense array.
-function updateTotal() {
-    const totalSpent = expenses.reduce(function(total, expense) {
-        return total + expense.amount;
+function updateBusinessSummary() {
+    const total = sales.reduce(function(sum, sale) {
+        return sum + sale.amount;
     }, 0);
 
-    totalAmount.textContent = formatMoney(totalSpent);
+    const mpesaTotal = sales
+        .filter(function(sale) {
+            return sale.paymentMethod === "M-Pesa";
+        })
+        .reduce(function(sum, sale) {
+            return sum + sale.amount;
+        }, 0);
+
+    totalSalesDisplay.textContent = formatMoney(total);
+    totalTransactionsDisplay.textContent = String(sales.length);
+    mpesaSalesDisplay.textContent = formatMoney(mpesaTotal);
 }
 
-// Calculate sales minus recorded expenses.
-// This is not necessarily net profit.
-function updateBusinessBalance() {
-    const totalSales = sales.reduce(function(total, sale) {
-        return total + sale.amount;
-    }, 0);
-
-    const totalExpenses = expenses.reduce(function(total, expense) {
-        return total + expense.amount;
-    }, 0);
-
-    totalSalesDisplay.textContent = formatMoney(totalSales);
-    businessBalanceDisplay.textContent =
-        formatMoney(totalSales - totalExpenses);
-}
-
-// Display expenses and allow deletion.
-function displayExpenses() {
-    expenseList.innerHTML = "";
-
-    expenses.forEach(function(expense) {
-        const item = document.createElement("div");
-        item.className = "expense-item";
-
-        const details = document.createElement("div");
-
-        const heading = document.createElement("h3");
-        heading.textContent = expense.category;
-
-        const name = document.createElement("p");
-        name.textContent = expense.name;
-
-        details.appendChild(heading);
-        details.appendChild(name);
-
-        if (expense.date) {
-            const date = document.createElement("p");
-            date.textContent = expense.date;
-            details.appendChild(date);
-        }
-
-        const amount = document.createElement("p");
-        amount.className = "expense-amount";
-        amount.textContent = "- " + formatMoney(expense.amount);
-
-        const deleteButton = document.createElement("button");
-        deleteButton.textContent = "Delete";
-        deleteButton.className = "delete-button";
-
-        deleteButton.addEventListener("click", function() {
-            const index = expenses.indexOf(expense);
-
-            if (index !== -1) {
-                expenses.splice(index, 1);
-                saveExpenses();
-                displayExpenses();
-            }
-        });
-
-        item.appendChild(details);
-        item.appendChild(amount);
-        item.appendChild(deleteButton);
-        expenseList.appendChild(item);
-    });
-
-    updateTotal();
-    updateBusinessBalance();
-}
-
-// Display sales with their date and payment method.
 function updateSalesDisplay() {
     salesList.innerHTML = "";
 
     sales.forEach(function(sale) {
         const item = document.createElement("li");
-
         const details = document.createElement("div");
 
         const service = document.createElement("strong");
@@ -235,74 +100,66 @@ function updateSalesDisplay() {
         const amount = document.createElement("p");
         amount.textContent = formatMoney(sale.amount);
 
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.textContent = "Delete";
+
         details.appendChild(service);
         details.appendChild(date);
         details.appendChild(payment);
         details.appendChild(amount);
 
-        const deleteButton = document.createElement("button");
-        deleteButton.textContent = "Delete";
-
-        deleteButton.addEventListener("click", function() {
-            const index = sales.indexOf(sale);
-
-            if (index !== -1) {
-                sales.splice(index, 1);
-                saveSales();
-                updateSalesDisplay();
-            }
-        });
-
         item.appendChild(details);
         item.appendChild(deleteButton);
         salesList.appendChild(item);
+
+        deleteButton.addEventListener("click", function() {
+            const confirmed = confirm(
+                "Delete this sale? This cannot be undone."
+            );
+
+            if (!confirmed) {
+                return;
+            }
+
+            sales = sales.filter(function(currentSale) {
+                return currentSale !== sale;
+            });
+
+            saveSales();
+            updateSalesDisplay();
+            updateBusinessSummary();
+            updateDailyReport();
+        });
     });
 
-    updateBusinessBalance();
+    updateBusinessSummary();
 }
 
-// Handle adding an expense.
-expenseForm.addEventListener("submit", function(event) {
-    event.preventDefault();
+function updateDailyReport() {
+    const selectedDate = reportDateInput.value;
 
-    const expenseName = document
-        .getElementById("expense-name").value.trim();
-
-    const expenseAmount = Number(
-        document.getElementById("expense-amount").value
-    );
-
-    const expenseCategory = document
-        .getElementById("expense-category").value;
-
-    if (!expenseName) {
-        alert("Please enter an expense name.");
-        return;
-    }
-
-    if (!Number.isFinite(expenseAmount) || expenseAmount <= 0) {
-        alert("Enter an expense amount greater than zero.");
-        return;
-    }
-
-    if (!expenseCategory) {
-        alert("Please choose an expense category.");
-        return;
-    }
-
-    expenses.push({
-        name: expenseName,
-        amount: expenseAmount,
-        category: expenseCategory,
-        date: getTodayDate()
+    const dailySales = sales.filter(function(sale) {
+        return sale.date === selectedDate;
     });
 
-    saveExpenses();
-    displayExpenses();
-    expenseForm.reset();
-});
+    const total = dailySales.reduce(function(sum, sale) {
+        return sum + sale.amount;
+    }, 0);
 
-// Handle adding a sale.
+    const mpesaTotal = dailySales
+        .filter(function(sale) {
+            return sale.paymentMethod === "M-Pesa";
+        })
+        .reduce(function(sum, sale) {
+            return sum + sale.amount;
+        }, 0);
+
+    reportSalesDisplay.textContent = formatMoney(total);
+    reportCountDisplay.textContent = String(dailySales.length);
+    reportMpesaDisplay.textContent = formatMoney(mpesaTotal);
+}
+
 salesForm.addEventListener("submit", function(event) {
     event.preventDefault();
 
@@ -316,13 +173,8 @@ salesForm.addEventListener("submit", function(event) {
     const paymentMethod = document
         .getElementById("payment-method").value;
 
-    if (!service) {
-        alert("Enter the service name.");
-        return;
-    }
-
-    if (!Number.isFinite(amount) || amount <= 0) {
-        alert("Enter a sale amount greater than zero.");
+    if (!service || !Number.isFinite(amount) || amount <= 0) {
+        alert("Enter a service and an amount greater than zero.");
         return;
     }
 
@@ -340,52 +192,14 @@ salesForm.addEventListener("submit", function(event) {
 
     saveSales();
     updateSalesDisplay();
+    updateDailyReport();
     salesForm.reset();
 });
 
-// Initialize after both expense and sales data are loaded.
-saveExpenses();
-saveSales();
-displayExpenses();
-updateSalesDisplay();
-
-const reportDateInput = document.getElementById("report-date");
-const reportSalesDisplay = document.getElementById("report-sales");
-const reportExpensesDisplay = document.getElementById("report-expenses");
-const reportBalanceDisplay = document.getElementById("report-balance");
-const exportReportButton = document.getElementById("export-report");
-
-// Start by showing today's report.
 reportDateInput.value = getTodayDate();
-
-function updateDailyReport() {
-    const selectedDate = reportDateInput.value;
-
-    const dailySales = sales.filter(function(sale) {
-        return sale.date === selectedDate;
-    });
-
-    const dailyExpenses = expenses.filter(function(expense) {
-        return expense.date === selectedDate;
-    });
-
-    const salesTotal = dailySales.reduce(function(total, sale) {
-        return total + sale.amount;
-    }, 0);
-
-    const expensesTotal = dailyExpenses.reduce(function(total, expense) {
-        return total + expense.amount;
-    }, 0);
-
-    reportSalesDisplay.textContent = formatMoney(salesTotal);
-    reportExpensesDisplay.textContent = formatMoney(expensesTotal);
-    reportBalanceDisplay.textContent =
-        formatMoney(salesTotal - expensesTotal);
-}
 
 reportDateInput.addEventListener("change", updateDailyReport);
 
-// Export the selected day's sales and expenses.
 exportReportButton.addEventListener("click", function() {
     const selectedDate = reportDateInput.value;
 
@@ -395,14 +209,13 @@ exportReportButton.addEventListener("click", function() {
     }
 
     const rows = [
-        ["Type", "Date", "Description", "Category or Payment Method", "Amount (KSh)"]
+        ["Date", "Service", "Payment Method", "Amount (KSh)"]
     ];
 
     sales.filter(function(sale) {
         return sale.date === selectedDate;
     }).forEach(function(sale) {
         rows.push([
-            "Sale",
             sale.date,
             sale.service,
             sale.paymentMethod,
@@ -410,23 +223,9 @@ exportReportButton.addEventListener("click", function() {
         ]);
     });
 
-    expenses.filter(function(expense) {
-        return expense.date === selectedDate;
-    }).forEach(function(expense) {
-        rows.push([
-            "Expense",
-            expense.date,
-            expense.name,
-            expense.category,
-            expense.amount.toFixed(2)
-        ]);
-    });
-
-    // Escape CSV values so commas and quotes don't break the file.
     const csv = rows.map(function(row) {
         return row.map(function(value) {
-            const safeValue = String(value).replace(/"/g, '""');
-            return '"' + safeValue + '"';
+            return '"' + String(value).replace(/"/g, '""') + '"';
         }).join(",");
     }).join("\r\n");
 
@@ -438,7 +237,7 @@ exportReportButton.addEventListener("click", function() {
     const link = document.createElement("a");
 
     link.href = url;
-    link.download = "biztrack-report-" + selectedDate + ".csv";
+    link.download = "biztrack-sales-" + selectedDate + ".csv";
 
     document.body.appendChild(link);
     link.click();
@@ -447,5 +246,5 @@ exportReportButton.addEventListener("click", function() {
     URL.revokeObjectURL(url);
 });
 
-// Refresh the report whenever the app starts.
+updateSalesDisplay();
 updateDailyReport();
