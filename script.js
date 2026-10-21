@@ -248,3 +248,14 @@ exportReportButton.addEventListener("click", function() {
 
 updateSalesDisplay();
 updateDailyReport();
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function() {
+        navigator.serviceWorker.register("./service-worker.js")
+            .then(function() {
+                console.log("BizTrack offline support is ready.");
+            })
+            .catch(function(error) {
+                console.error("Service worker registration failed:", error);
+            });
+    });
+}

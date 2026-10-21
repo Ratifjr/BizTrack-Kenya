@@ -1,0 +1,19 @@
+
+{
+  "name": "BizTrack Kenya",
+  "short_name": "BizTrack",
+  "description": "Simple sales tracking for Kenyan small businesses.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b1512",
+  "theme_color": "#0b1512",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
