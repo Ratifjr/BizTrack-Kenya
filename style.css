@@ -1,0 +1,329 @@
+
+/* 1. Style the entire page */
+body {
+    background-color: #121212;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+/* 2. Style the main heading */
+h1 {
+    color: #4ade80;
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+/* 3. Style the paragraph */
+p {
+    color: #b3b3b3;
+    font-size: 16px;
+    margin-top: 0;
+}
+
+/* Style the expense summary card */
+.expense-card {
+    background-color: #1e1e1e;
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid #333333;
+}
+
+/* Style the card heading */
+.expense-card h2 {
+    color: #b3b3b3;
+    font-size: 18px;
+    margin-top: 0;
+}
+
+/* Style the amount */
+.amount {
+    color: #4ade80;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 15px 0;
+}
+
+/* Style the description */
+.description {
+    color: #888888;
+    font-size: 14px;
+    margin-bottom: 0;
+}
+
+/* Recent expenses section */
+.recent-expenses {
+    max-width: 450px;
+    margin: 40px auto;
+    text-align: left;
+}
+
+/* Section heading */
+.recent-expenses h2 {
+    color: #ffffff;
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+/* Each expense row */
+.expense-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1e1e1e;
+    padding: 15px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    border: 1px solid #333333;
+}
+
+/* Expense name */
+.expense-item h3 {
+    color: #ffffff;
+    font-size: 16px;
+    margin: 0 0 5px;
+}
+
+/* Expense description */
+.expense-item p {
+    color: #b3b3b3;
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Expense amount */
+.expense-item .expense-amount {
+    color: #ff7777;
+    font-weight: bold;
+    white-space: nowrap;
+    margin-left: 12px;
+}
+
+/* Make the website comfortable on small screens */
+@media (max-width: 480px) {
+    body {
+        padding: 25px 15px;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    .expense-card {
+        padding: 20px;
+    }
+
+    .recent-expenses {
+        width: 100%;
+    }
+
+    .expense-item {
+        padding: 12px;
+    }
+}
+
+/* Add expense form container */
+.add-expense {
+    max-width: 450px;
+    margin: 40px auto;
+    padding: 25px;
+    background-color: #1e1e1e;
+    border: 1px solid #333333;
+    border-radius: 12px;
+    text-align: left;
+}
+
+/* Form heading */
+.add-expense h2 {
+    color: #ffffff;
+    font-size: 22px;
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+/* Form labels */
+.add-expense label {
+    display: block;
+    color: #b3b3b3;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+/* Form input fields and dropdown */
+.add-expense input,
+.add-expense select {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    margin-bottom: 20px;
+    background-color: #121212;
+    color: #ffffff;
+    border: 1px solid #444444;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+/* Add expense button */
+.add-expense button {
+    width: 100%;
+    padding: 13px;
+    background-color: #4ade80;
+    color: #121212;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Button hover effect */
+.add-expense button:hover {
+    background-color: #22c55e;
+}
+.delete-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.delete-button:hover {
+    background-color: #b02a37;
+}
+
+.sales-section,
+.business-summary,
+.sales-history {
+    max-width: 600px;
+    margin: 24px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+.sales-section h2,
+.business-summary h2,
+.sales-history h2 {
+    margin-top: 0;
+    color: #173d35;
+}
+
+#sales-form {
+    display: grid;
+    gap: 10px;
+}
+
+#sales-form input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+}
+
+#sales-form button {
+    padding: 12px;
+    background: #173d35;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#sales-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #eeeeee;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+    .sales-section,
+    .business-summary,
+    .sales-history {
+        margin: 16px 8px;
+        padding: 16px;
+    }
+}
+
+.daily-report {
+    max-width: 600px;
+    margin: 24px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+.daily-report h2 {
+    color: #173d35;
+}
+
+.daily-report input,
+.daily-report button {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    margin-top: 8px;
+    border-radius: 8px;
+}
+
+.daily-report input {
+    border: 1px solid #cccccc;
+}
+
+.daily-report button {
+    border: none;
+    background: #173d35;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.report-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin: 16px 0;
+}
+
+.report-card {
+    min-width: 0;
+    padding: 12px;
+    background: #f1f5f3;
+    border-radius: 8px;
+    overflow-wrap: anywhere;
+}
+
+.report-card p {
+    margin: 0 0 8px;
+    color: #52645e;
+}
+
+.report-card h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: #173d35;
+}
+
+@media (max-width: 480px) {
+    .daily-report {
+        margin: 16px 8px;
+        padding: 16px;
+    }
+
+    .report-grid {
+        grid-template-columns: 1fr;
+    }
+}

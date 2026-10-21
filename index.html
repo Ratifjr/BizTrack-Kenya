@@ -1,0 +1,171 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Expense Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>BizTrack Kenya</h1>
+    <p>Track your money. Control your spending.</p>
+
+    <!-- Total spending summary -->
+    <div class="expense-card">
+        <h2>Total Spent</h2>
+        <p class="amount" id="total-amount">KSh 250.00</p>
+        <p class="description">Your spending at a glance</p>
+    </div>
+   
+<section class="sales-section">
+    <h2>Record a Sale</h2>
+
+    <form id="sales-form">
+        <label for="service-name">Service</label>
+        <input
+            type="text"
+            id="service-name"
+            placeholder="e.g. Haircut, Beard Trim"
+            required
+        >
+
+        <label for="sale-amount">Amount (KSh)</label>
+        <input
+            type="number"
+            id="sale-amount"
+            placeholder="e.g. 300"
+            min="1"
+            step="0.01"
+            required
+        >
+        
+<label for="payment-method">Payment Method</label>
+<select id="payment-method" required>
+    <option value="">Choose payment method</option>
+    <option value="M-Pesa">M-Pesa</option>
+    <option value="Cash">Cash</option>
+    <option value="Card">Card</option>
+    <option value="Other">Other</option>
+</select>
+
+
+        <button type="submit">Add Sale</button>
+    </form>
+</section>
+
+<section class="business-summary">
+    <h2>Business Summary</h2>
+
+    <p>Total Sales: <strong id="total-sales">KSh 0.00</strong></p>
+
+    <p>Total Expenses: <strong id="total-amount">KSh 0.00</strong></p>
+
+    <p>Balance: <strong id="business-balance">KSh 0.00</strong></p>
+</section>
+
+<section class="daily-report">
+    <h2>Daily Business Report</h2>
+
+    <label for="report-date">Choose date</label>
+    <input type="date" id="report-date">
+
+    <div class="report-grid">
+        <article class="report-card">
+            <p>Sales</p>
+            <h3 id="report-sales">KSh 0.00</h3>
+        </article>
+
+        <article class="report-card">
+            <p>Expenses</p>
+            <h3 id="report-expenses">KSh 0.00</h3>
+        </article>
+
+        <article class="report-card">
+            <p>Difference</p>
+            <h3 id="report-balance">KSh 0.00</h3>
+        </article>
+    </div>
+
+    <button type="button" id="export-report">
+        Export Records to CSV
+    </button>
+</section>
+
+
+<section class="sales-history">
+    <h2>Sales History</h2>
+    <ul id="sales-list"></ul>
+</section>
+ 
+
+    <!-- List of expenses -->
+    <section class="recent-expenses">
+        <h2>Recent Expenses</h2>
+
+        <div id="expense-list">
+
+            <!-- Transport expense -->
+            <div class="expense-item">
+                <div>
+                    <h3>Transport</h3>
+                    <p>Bus Fare</p>
+                </div>
+                <p class="expense-amount">-KSh 100.00</p>
+            </div>
+
+            <!-- Food expense -->
+            <div class="expense-item">
+                <div>
+                    <h3>Food</h3>
+                    <p>Lunch</p>
+                </div>
+                <p class="expense-amount">-KSh 150.00</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Form for adding a new expense -->
+    <section class="add-expense">
+        <h2>Add New Expense</h2>
+
+        <form id="expense-form">
+
+            <label for="expense-name">Expense Name</label>
+            <input
+                type="text"
+                id="expense-name"
+                placeholder="e.g. Matatu fare"
+                required
+            >
+
+            <label for="expense-amount">Amount (KSh)</label>
+            <input
+                type="number"
+                id="expense-amount"
+                placeholder="e.g. 100"
+                min="0.01"
+                step="0.01"
+                required
+            >
+
+            <label for="expense-category">Category</label>
+            <select id="expense-category" required>
+                <option value="">Choose a category</option>
+                <option value="Transport">Transport</option>
+                <option value="Food">Food</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Bills">Bills</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <button type="submit">Add Expense</button>
+
+        </form>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
