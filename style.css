@@ -274,3 +274,400 @@ footer {
         align-items: flex-start;
     }
 }
+
+/* ==========================================
+   BIZTRACK 2.0 — PLAYFUL FINTECH DESIGN
+   Visual upgrade layer
+   ========================================== */
+
+:root {
+    --bt-bg: #0b0d14;
+    --bt-surface: #151925;
+    --bt-surface-hover: #1d2333;
+    --bt-purple: #9b7bff;
+    --bt-green: #b8ff65;
+    --bt-cyan: #50e3ff;
+    --bt-pink: #ff78bd;
+    --bt-orange: #ffbd69;
+    --bt-text: #f5f7ff;
+    --bt-muted: #a2a9bd;
+    --bt-border: rgba(255, 255, 255, 0.09);
+    --bt-radius: 18px;
+}
+
+/* Main page */
+body {
+    background:
+        radial-gradient(
+            ellipse at 5% 0%,
+            rgba(155, 123, 255, 0.12),
+            transparent 38%
+        ),
+        radial-gradient(
+            ellipse at 95% 15%,
+            rgba(80, 227, 255, 0.08),
+            transparent 32%
+        ),
+        var(--bt-bg);
+
+    color: var(--bt-text);
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    line-height: 1.6;
+}
+
+/* Headings */
+h1,
+h2,
+h3 {
+    color: var(--bt-text);
+    letter-spacing: -0.5px;
+}
+
+/* Links */
+a {
+    color: var(--bt-cyan);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: var(--bt-green);
+}
+
+/* Buttons */
+button {
+    cursor: pointer;
+    font: inherit;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        filter 0.2s ease;
+}
+
+button:hover {
+    filter: brightness(1.12);
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* Form controls */
+input,
+select,
+textarea {
+    background: var(--bt-surface);
+    color: var(--bt-text);
+    border: 1px solid var(--bt-border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font: inherit;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 2px solid var(--bt-purple);
+    outline-offset: 2px;
+}
+
+/* Keyboard accessibility */
+button:focus-visible,
+a:focus-visible {
+    outline: 2px solid var(--bt-cyan);
+    outline-offset: 4px;
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* ===== BIZTRACK MONEY COMMAND CENTER ===== */
+
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-icon {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #b8ff65, #50e3ff);
+    color: #10131b;
+    font-size: 27px;
+    font-weight: 900;
+}
+
+.brand h1,
+.brand p {
+    margin: 0;
+}
+
+.brand p {
+    color: #a2a9bd;
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+.header-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 13px;
+    border: 1px solid rgba(184, 255, 101, 0.2);
+    border-radius: 999px;
+    background: rgba(184, 255, 101, 0.07);
+    color: #b8ff65;
+    font-size: 12px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #b8ff65;
+    box-shadow: 0 0 12px #b8ff65;
+}
+
+.money-hero {
+    padding: clamp(22px, 5vw, 38px);
+    margin-bottom: 22px;
+    overflow: hidden;
+    border: 1px solid rgba(155, 123, 255, 0.3);
+    border-radius: 26px;
+    background:
+        radial-gradient(
+            circle at 90% 0%,
+            rgba(80, 227, 255, 0.17),
+            transparent 35%
+        ),
+        linear-gradient(135deg, #20203a, #151925 65%);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.hero-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.eyebrow {
+    color: #b8ff65;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.money-hero h2 {
+    margin: 8px 0;
+    font-size: clamp(25px, 4vw, 40px);
+    line-height: 1.15;
+}
+
+.hero-subtitle {
+    color: #a2a9bd;
+    max-width: 460px;
+}
+
+.hero-emoji {
+    font-size: clamp(44px, 8vw, 76px);
+    filter: drop-shadow(0 0 20px rgba(155, 123, 255, 0.35));
+}
+
+.hero-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin: 26px 0;
+}
+
+.hero-stat {
+    padding: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.045);
+}
+
+.hero-stat span {
+    display: block;
+    color: #c0c4d4;
+    font-size: 13px;
+}
+
+.hero-stat strong {
+    display: block;
+    margin-top: 8px;
+    color: #b8ff65;
+    font-size: clamp(20px, 4vw, 30px);
+    overflow-wrap: anywhere;
+}
+
+.mission-box {
+    padding: 18px;
+    border-radius: 18px;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.mission-heading {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    color: #f5f7ff;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+#mission-progress {
+    height: 12px;
+    margin: 14px 0 8px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #303449;
+}
+
+#mission-progress-fill {
+    width: 0%;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #9b7bff, #50e3ff, #b8ff65);
+    transition: width 0.5s ease;
+}
+
+#mission-message {
+    margin-bottom: 0;
+    color: #bfc4d5;
+    font-size: 12px;
+}
+
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 26px;
+}
+
+.action-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 15px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 16px;
+    background: #151925;
+    color: #f5f7ff;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.action-link:hover {
+    border-color: #9b7bff;
+    color: #b8ff65;
+    transform: translateY(-3px);
+}
+
+@media (max-width: 600px) {
+    .hero-emoji {
+        display: none;
+    }
+
+    .hero-stats {
+        gap: 9px;
+    }
+
+    .hero-stat {
+        padding: 13px;
+    }
+
+    .quick-actions {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* BizTrack: mobile polish */
+* {
+    box-sizing: border-box;
+}
+
+input,
+select,
+button {
+    max-width: 100%;
+    font: inherit;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 12px 14px;
+    margin: 8px 0;
+    border: 1px solid #343a46;
+    border-radius: 10px;
+    background: #1c2029;
+    color: #ffffff;
+}
+
+button {
+    min-height: 44px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+img,
+svg {
+    max-width: 100%;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 20px 12px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    h2 {
+        font-size: 1.25rem;
+    }
+
+    .sales-section,
+    .daily-report,
+    .sales-history {
+        padding: 16px;
+    }
+
+    #sales-list {
+        overflow-wrap: anywhere;
+    }
+}
+

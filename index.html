@@ -10,13 +10,90 @@
 <meta name="theme-color" content="#0b1512">
 </head>
 <body>
-    <header>
-        <h1>BizTrack Kenya</h1>
-        <p>Track your sales. Understand your business.</p>
-    </header>
+    
+<header class="app-header">
+    <div class="brand">
+        <div class="brand-icon">₿</div>
+        <div>
+            <h1>BizTrack</h1>
+            <p>YOUR MONEY. YOUR MOVES.</p>
+        </div>
+    </div>
+
+    <div class="header-status">
+        <span class="status-dot"></span>
+        Business mode active
+    </div>
+</header>
+
+<section class="money-hero">
+    <div class="hero-top">
+        <div>
+            <p class="eyebrow">💸 YOUR BUSINESS COMMAND CENTER</p>
+            <h2>Make every shilling count.</h2>
+            <p class="hero-subtitle">
+                Track your hustle. Measure your growth. Own your money.
+            </p>
+        </div>
+        <div class="hero-emoji" aria-hidden="true">🚀</div>
+    </div>
+
+    <div class="hero-stats">
+        <div class="hero-stat">
+            <span>💰 Total revenue</span>
+            <strong id="hero-total-sales">KSh 0.00</strong>
+        </div>
+
+        <div class="hero-stat">
+            <span>⚡ Transactions</span>
+            <strong id="hero-total-transactions">0</strong>
+        </div>
+    </div>
+
+    <div class="mission-box">
+        <div class="mission-heading">
+            <span>🎯 Daily sales mission</span>
+            <span id="mission-progress-label">KSh 0 / 5,000</span>
+        </div>
+
+        <div
+            class="mission-track"
+            role="progressbar"
+            aria-label="Daily sales goal progress"
+            aria-valuemin="0"
+            aria-valuemax="5000"
+            aria-valuenow="0"
+            id="mission-progress"
+        >
+            <div id="mission-progress-fill"></div>
+        </div>
+
+        <p id="mission-message">
+            Your next milestone starts with your first sale.
+        </p>
+    </div>
+</section>
+
+<nav class="quick-actions" aria-label="Quick actions">
+    <a href="#sales-form" class="action-link">
+        <span>➕</span>
+        Record sale
+    </a>
+
+    <a href="#daily-report" class="action-link">
+        <span>📊</span>
+        View reports
+    </a>
+
+    <a href="#sales-history" class="action-link">
+        <span>🧾</span>
+        Sales history
+    </a>
+</nav>
+
 
     <main>
-        <section class="sales-section">
+     <section class="sales-section">
             <h2>Record a Sale</h2>
 
             <form id="sales-form">
@@ -60,7 +137,7 @@
 </section>
 
 
-<section class="daily-report">
+<section class="daily-report" id="daily-report">
     <h2>Daily Business Report</h2>
 
     <label for="report-date">Choose date</label>
@@ -90,8 +167,19 @@
 
         
 
-        <section class="sales-history">
+        <section class="sales-history" id="sales-history">
             <h2>Sales History</h2>
+            <input
+    type="text"
+    id="search-sales"
+    placeholder="Search sales by service or payment method..."
+>
+<select id="filter-payment">
+    <option value="all">All Payment Methods</option>
+    <option value="M-Pesa">M-Pesa</option>
+    <option value="Cash">Cash</option>
+    <option value="Bank">Bank</option>
+</select>
             <ul id="sales-list"></ul>
         </section>
     </main>

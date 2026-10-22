@@ -6,6 +6,24 @@ const totalSalesDisplay = document.getElementById("total-sales");
 const totalTransactionsDisplay = document.getElementById("total-transactions");
 const mpesaSalesDisplay = document.getElementById("mpesa-sales");
 
+ const heroTotalSalesDisplay =
+    document.getElementById("hero-total-sales");
+
+const heroTransactionsDisplay =
+    document.getElementById("hero-total-transactions");
+
+const missionProgress = document.getElementById("mission-progress");
+const missionProgressFill =
+    document.getElementById("mission-progress-fill");
+
+const missionProgressLabel =
+    document.getElementById("mission-progress-label");
+
+const missionMessage = document.getElementById("mission-message");
+
+const DAILY_SALES_GOAL = 5000;
+
+
 const reportDateInput = document.getElementById("report-date");
 const reportSalesDisplay = document.getElementById("report-sales");
 const reportCountDisplay = document.getElementById("report-count");
@@ -23,6 +41,81 @@ function getTodayDate() {
 
 function formatMoney(amount) {
     return "KSh " + amount.toFixed(2);
+}
+  
+function updateMoneyMissionDashboard() {
+    // Calculate revenue from all saved sales.
+    const totalRevenue = sales.reduce(function(sum, sale) {
+        return sum + sale.amount;
+    }, 0);
+
+    if (heroTotalSalesDisplay) {
+        heroTotalSalesDisplay.textContent =
+            formatMoney(totalRevenue);
+    }
+
+    if (heroTransactionsDisplay) {
+        heroTransactionsDisplay.textContent =
+            String(sales.length);
+    }
+
+    // Calculate revenue earned today.
+    const today = getTodayDate();
+
+    const todayRevenue = sales
+        .filter(function(sale) {
+            return sale.date === today;
+        })
+        .reduce(function(sum, sale) {
+            return sum + sale.amount;
+        }, 0);
+
+    // Calculate progress toward the KSh 5,000 goal.
+    const progress = Math.min(
+        (todayRevenue / DAILY_SALES_GOAL) * 100,
+        100
+    );
+
+    if (missionProgressFill) {
+        missionProgressFill.style.width = progress + "%";
+    }
+
+    if (missionProgress) {
+        missionProgress.setAttribute(
+            "aria-valuenow",
+            String(Math.min(todayRevenue, DAILY_SALES_GOAL))
+        );
+    }
+
+    if (missionProgressLabel) {
+        missionProgressLabel.textContent =
+            "KSh " +
+            todayRevenue.toLocaleString("en-KE", {
+                maximumFractionDigits: 2
+            }) +
+            " / 5,000";
+    }
+
+    if (missionMessage) {
+        if (todayRevenue >= DAILY_SALES_GOAL) {
+            missionMessage.textContent =
+                "🏆 MISSION COMPLETE! You hit your daily sales goal!";
+        } else if (todayRevenue === 0) {
+            missionMessage.textContent =
+                "🚀 Your next milestone starts with your first sale.";
+        } else {
+            const remaining = DAILY_SALES_GOAL - todayRevenue;
+
+            missionMessage.textContent =
+                "🔥 You're " +
+                Math.round(progress) +
+                "% there! Just KSh " +
+                remaining.toLocaleString("en-KE", {
+                    maximumFractionDigits: 2
+                }) +
+                " to hit today's goal.";
+        }
+    }
 }
 
 function loadSavedSales() {
@@ -79,12 +172,41 @@ function updateBusinessSummary() {
     totalSalesDisplay.textContent = formatMoney(total);
     totalTransactionsDisplay.textContent = String(sales.length);
     mpesaSalesDisplay.textContent = formatMoney(mpesaTotal);
+    updateMoneyMissionDashboard();
 }
+const searchSales = document.getElementById("search-sales");
+let salesSearchTerm = "";
+
+const filterPayment = document.getElementById("filter-payment");
+let selectedPaymentMethod = "all";
+
+filterPayment.addEventListener("change", function () {
+    selectedPaymentMethod = filterPayment.value;
+    updateSalesDisplay();
+});
+
+searchSales.addEventListener("input", function () {
+    salesSearchTerm = searchSales.value.toLowerCase().trim();
+    updateSalesDisplay();
+});
 
 function updateSalesDisplay() {
     salesList.innerHTML = "";
 
-    sales.forEach(function(sale) {
+    sales
+    sales
+    .filter(function(sale) {
+        const matchesSearch =
+            sale.service.toLowerCase().includes(salesSearchTerm) ||
+            sale.paymentMethod.toLowerCase().includes(salesSearchTerm);
+
+        const matchesPayment =
+            selectedPaymentMethod === "all" ||
+            sale.paymentMethod === selectedPaymentMethod;
+
+        return matchesSearch && matchesPayment;
+    })
+    .forEach(function(sale, index) {
         const item = document.createElement("li");
         const details = document.createElement("div");
 
